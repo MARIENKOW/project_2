@@ -1,5 +1,4 @@
-const input = document.querySelector('input')
-const text = document.querySelector('.test__text')
+
 const TASK_1 =`function bubbleSort(arr) {
    for (var i = 0, endI = arr.length - 1; i < endI; i++) {
       for (var j = 0, endJ = endI - i; j < endJ; j++) {
@@ -12,106 +11,179 @@ const TASK_1 =`function bubbleSort(arr) {
    }
    return arr;
 }`;
-function alwaysInFocus(el){
-   el.focus();
-   document.onclick=()=>{
-      el.focus()
-   }
-   const firstLetter = document.querySelector('[data-index="0"]')
-   firstLetter.classList.add('animation')
-}
+const TASK_2 = `const user = new User('Denis')`
 
-const arrayFromString = TASK_1.split('\n');
-arrayFromString.forEach(function(word,i){
-   const spanLine = document.createElement('span');
-   spanLine.className = 'test__line'
-   const arrayFromWord = Array.from(word);
-   arrayFromWord.push('gap')
-   arrayFromWord.forEach((letter,j)=>{
-      const spanLetter = document.createElement('span');
-      const currentIndex = arrayFromString.reduce((ac,el,ind)=>{
-         if(ind>=i)return ac;
+class Task{
+   constructor(task){
+      this.task = task;
+      this.block = null
+      this.input = null
+      this.timer = null
+      this.taskLength = 0;
+      this.bestResult = 0
+   }
+   printTask(){
+      const arrayFromString = this.task.split('\n');
+      arrayFromString.forEach((word,i)=>{
+         const spanLine = document.createElement('span');
+         spanLine.className = 'test__line'
+         const arrayFromWord = Array.from(word);
+         arrayFromWord.push('gap')
+         arrayFromWord.forEach((letter,j)=>{
+            const spanLetter = document.createElement('span');
+            this.taskLength = spanLetter.dataset.index = this.findCurrentIndex(arrayFromString,i,j)
+            if(letter === " "){
+               spanLetter.innerHTML = "&nbsp";
+            }else if(letter === "gap"){
+               spanLetter.innerHTML = "&nbsp";
+               spanLetter.className = 'gap'
+            }else{
+               spanLetter.textContent = letter;
+            }
+            spanLine.appendChild(spanLetter)
+         })
+         this.block.appendChild(spanLine)
+      })
+   }
+   findCurrentIndex(array,wordIndex,letterIndex){
+      const currentIndex = array.reduce((ac,el,ind)=>{
+         if(ind>=wordIndex)return ac;
          return ac+el.length+1;
       },0)
-      spanLetter.dataset.index = currentIndex + j
-      if(letter === " "){
-         spanLetter.innerHTML = "&nbsp";
-      }else if(letter === "gap"){
-         spanLetter.innerHTML = "&nbsp";
-         spanLetter.className = 'gap'
-      }else{
-         spanLetter.textContent = letter;
+      return currentIndex + letterIndex;
+   }
+   stopPrinting(last){
+      const el = document.querySelector(`[data-index="${last}"]`)
+      el.classList.remove('animation')
+      el.classList.add('bad');
+      el.classList.remove('good');
+      this.isBadLetter = true
+   }
+   deleteLetters(last){
+      const el = document.querySelector(`[data-index="${last+1}"]`)
+      const nextEll = document.querySelector(`[data-index="${last+2}"]`)
+      this.isBadLetter = false;
+      el.classList.remove('bad');
+      el.classList.remove('good');
+      el.classList.add('animation');
+      nextEll?.classList?.remove('animation')
+   }
+   printingLetters(last){
+      const el = document.querySelector(`[data-index="${last}"]`)
+      const nextEl = document.querySelector(`[data-index="${last+1}"]`)
+      el.classList.add('good');
+      el.classList.remove('bad');
+      el.classList.remove('animation')
+      nextEl?.classList?.add('animation')
+   }
+   alwaysInFocus(){
+      this.input.focus();
+      document.onclick=()=>{
+         this.input.focus()
       }
-      spanLine.appendChild(spanLetter)
-   })
-   text.appendChild(spanLine)
-})
-
-input.addEventListener('input',function(e){
-   const last = this.value.length - 1;
-   const el = document.querySelector(`[data-index="${last}"]`)
-   const nextEl = document.querySelector(`[data-index="${last+1}"]`)
-   const nextEll = document.querySelector(`[data-index="${last+2}"]`)
-   if(!input.isBadLetter){
-      if(this.value[last]){
-         el.classList.remove('animation')
-         if(el.classList.contains('gap')){
-            el.classList.add('bad');
-            input.isBadLetter = true;
+      const firstLetter = document.querySelector('[data-index="0"]')
+      firstLetter.classList.add('animation')
+   }
+   checkNbsp(i,foo){
+      const currentElement = document.querySelector(`[data-index="${i}"]`);
+      if(currentElement?.innerHTML === '&nbsp;'){
+         this.printingLetters(i);
+         foo();
+         this.checkNbsp(i+1,foo);
+      }
+   }
+   starToPrint(){
+      this.input.addEventListener('input',(e)=>{
+         if(!this.interval)this.timerStart();
+         const last = this.input.value.length - 1;
+         const currentElement = document.querySelector(`[data-index="${last}"]`)
+         if(e.inputType==='deleteContentBackward'){
+            this.deleteLetters.call(this,last)
          }else{
-            if(this.value[last] === el?.textContent || (this.value[last] === ' ' && el?.innerHTML === "&nbsp;")){
-               el.classList.add('good');
-               el.classList.remove('bad');
-               nextEl.classList.add('animation')
-   
+            if(!this.isBadLetter){
+               if(currentElement.classList.contains('gap')){
+                  this.stopPrinting.call(this,last);
+               }else{
+                  if(this.input.value[last] === currentElement?.textContent || (this.input.value[last] === ' ' && currentElement?.innerHTML === "&nbsp;")){
+                     this.printingLetters(last);
+                     if(last === this.taskLength-1) return this.timerStop();
+                  }else{
+                     this.stopPrinting.call(this,last);
+                  }
+               }
             }else{
-               el.classList.add('bad');
-               el.classList.remove('good');
-               input.isBadLetter = true;
+               this.input.value = this.input.value.slice(0,-1);
             }
          }
-      }else{
-         nextEl.classList.add('animation')
-      }
-      nextEl.classList.remove('good')
-      nextEll.classList.remove('animation')
-   }else{
-      if(e.inputType==='deleteContentBackward'){
-         input.isBadLetter = false;
-         nextEl.classList.remove('bad');
-         nextEl.classList.add('animation');
-
-      }else{
-         this.value = this.value.slice(0,-1);
-      }
-   }
-})
-input.addEventListener('keydown',function(e){
-   if(e.key === 'Enter'){
-      const last = this.value.length;
-      const currentElement = document.querySelector(`[data-index = "${last}"]`)
-      let valueHelper = 0
-      if(currentElement.classList.contains('gap')){
-         checkNbsp(last,()=>valueHelper++);
-         console.log(valueHelper);
-         for(let i = 0; i <valueHelper;i++){
-            this.value+=" "
+      })
+      this.input.addEventListener('keydown',(e)=>{
+         if(e.key === 'Enter'){
+            if(!this.isBadLetter){
+               const last = this.input.value.length;
+               const currentElement = document.querySelector(`[data-index = "${last}"]`)
+               let valueHelper = 0
+               if(currentElement.classList.contains('gap')){
+                  this.checkNbsp(last,()=>valueHelper++);
+                  for(let i = 0; i <valueHelper;i++){
+                     this.input.value+=" "
+                  }
+               }else{
+                  this.input.value+=' ';
+                  this.stopPrinting.call(this,last)
+               }
+            }
          }
-      }
+      })
    }
-})
-
-alwaysInFocus(input)
-
-function checkNbsp(i,acc){
-   const currentElement = document.querySelector(`[data-index="${i}"]`);
-   const focusElement = document.querySelector(`[data-index="${i+1}"]`);
-   // const previousElement = document.querySelector(`[data-index="${i-1}"]`);
-   if(currentElement.innerHTML === '&nbsp;'){
-      currentElement.classList.add('good');
-      focusElement.classList.add('animation')
-      currentElement.classList.remove('animation')
-      acc();
-      checkNbsp(i+1,acc);
+   timerStart(){
+      let time = 0
+      this.interval = setInterval(()=>{
+         time++
+         const result = this.input.value.length/this.time * 60
+         console.log(result);
+         if(result){
+            this.timer.innerHTML = Math.round(result)
+         }
+         this.time = time;
+         this.result = result
+      },1000)
+   }
+   timerStop(){
+      clearInterval(this.interval)
+      this.interval = false
+      if(!this.bestResult || this.result > this.bestResult){
+         this.bestResult = this.result;
+      }
+      console.dir(this);
+   }
+   renew(){
+      if (this.interval) return;
+      this.input.value = null
+      const print = Array.from(document.querySelectorAll("[data-index]"))
+      for(let i = print.length-2;i>=-1;i--){
+         console.log(i);
+         this.deleteLetters(i);
+      }  
+      this.timer.innerHTML= null
+   }
+   pause(){
+      this.onPause = true;
    }
 }
+const task = new Task(TASK_1);
+task.block = document.querySelector('.test__text');
+task.input = document.querySelector('input');
+task.timer = document.querySelector('.test__timer')
+task.printTask()
+task.alwaysInFocus()
+task.starToPrint();
+
+btn.onclick=()=>{
+   task.renew()
+}
+btn.onclick=()=>{
+   task.pause()
+}
+
+
+
