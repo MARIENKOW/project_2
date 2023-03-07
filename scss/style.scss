@@ -22,7 +22,7 @@ input[type='number'],input[type="number"]:hover,input[type="number"]:focus {appe
 /*! ______ОБНУЛЕНИЕ______ */
 
 .container {
-   max-width: 1200px;
+   max-width: 1100px;
    margin: auto;
    padding: 0px 10px;
 }
@@ -95,4 +95,28 @@ input[type='number'],input[type="number"]:hover,input[type="number"]:focus {appe
    0%{background-color: transparent;}
    50%{background-color: rgb(255, 255, 255);}
    100%{background-color: transparent;}
+}
+
+.main {
+
+   &__inner {
+   }
+
+   &__title {
+      text-align: center;
+      font-size: 30px;
+   }
+
+   &__body {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 40px;
+   }
+   &__item {
+      width: calc(12.5% - 20px);
+   }
+}
+#rez{
+   color: #c6ca51;
+   font-size: 29px;
 }
