@@ -21,4 +21,7 @@ btn.onclick=()=>{
 }
 pause.onclick=()=>{
    task.pause()
+   if(task.onPause) return pause.classList.add('onPause')
+   pause.classList.remove('onPause')
+
 }

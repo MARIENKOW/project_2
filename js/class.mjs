@@ -17,12 +17,28 @@ class Task{
       this._bestResult = str;
       if(str === 0)return
       this.forBestResult.textContent = str
+      this.forBestResult.parentElement.style.display='flex'
    }
    printTask(){
       const arrayFromString = this.task.split('\n');
       arrayFromString.forEach((word,i)=>{
-         const spanLine = document.createElement('span');
-         spanLine.className = 'test__line'
+         const line = document.createElement('div')
+         line.style.display = 'flex'
+
+         const num  = document.createElement('span')
+         num.textContent = i+1;
+         num.className = 'test__number'
+         num.style.cssText = `
+         display:inline-block;
+         text-align:right;
+         width:30px;
+         margin-right:30px
+         `
+
+         const stroke = document.createElement('span');
+         stroke.className = 'test__stroke'
+         stroke.style.display = 'flex'
+
          const arrayFromWord = Array.from(word);
          arrayFromWord.push('gap')
          arrayFromWord.forEach((letter,j)=>{
@@ -36,9 +52,14 @@ class Task{
             }else{
                spanLetter.textContent = letter;
             }
-            spanLine.appendChild(spanLetter)
+            stroke.appendChild(spanLetter)
          })
-         this.block.appendChild(spanLine)
+
+
+         line.appendChild(num)
+         line.appendChild(stroke)
+
+         this.block.appendChild(line)
       })
    }
    alwaysInFocus(){
@@ -138,7 +159,7 @@ class Task{
       for(let i = print.length-2;i>=-1;i--){
          this.deleteLetters(i);
       }  
-      this.timer.innerHTML= null
+      this.timer.innerHTML= 0
    }
    pause(){
       if(!this.onPause){
@@ -146,7 +167,9 @@ class Task{
          this.currentValue = this.input.value;
          clearInterval(this.interval)
          this.interval = false
+         this.block.classList.add('blockOnPause')
       }else{
+         this.block.classList.remove('blockOnPause')
          this.onPause = false;
          this.input.value = this.currentValue
          this.timerStart()

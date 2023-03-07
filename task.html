@@ -4,20 +4,39 @@
    <meta charset="UTF-8">
    <meta http-equiv="X-UA-Compatible" content="IE=edge">
    <meta name="viewport" content="width=device-width,initial-scale=1.0">
+   <link href="https://fonts.googleapis.com/css?family=Anonymous+Pro:regular,italic,700,700italic" rel="stylesheet" />
    <title>Document</title>
    <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-   <div class="test">
-      <div class="container">
-         <div class="test__inner">
-            <input style="width:0;height:0;overflow: hidden;" class="test__input" type="text">
-            <section class="test__text">
-            </section>
-            <section class="test__timer"></section>
-            <section id = 'rez' ></section>
-            <button class="btn" id="btn">обновить</button>
-            <button class="btn pause" id="pause">пауза</button>
+   <div class="wrapper">
+      <div class="animatedItem"></div>
+      <div class="animatedItem"></div>
+      <div class="animatedItem"></div>
+      <div class="animatedItem"></div>
+      <div class="animatedItem"></div>
+      <div class="test">
+         <a href="index.html" class="link"><span></span></a>
+         <div class="container">
+            <div class="test__inner">
+               <section class="test__top">
+                  <div class="test__interface">
+                     <button class="btn test__btn" id="btn"></button>
+                     <button class="pause test__pause test__btn" id="pause"></button>
+                  </div>
+                  <section style="display:none;" class="test__right">
+                     <span class="test__subtitle">кращий результат</span>
+                     <span class="test__bestResult" id = 'rez' ></span>
+                  </section>
+               </section>
+               <section class="test__text">
+                  <input style="width:0;height:0;overflow: hidden;" class="test__input" type="text">
+               </section>
+               <div class="test__info">
+                  <div class="test__title">символів за хвилину</div>
+                  <section class="test__timer">0</section>
+               </div>
+            </div>
          </div>
       </div>
    </div>
