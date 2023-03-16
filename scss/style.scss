@@ -451,6 +451,60 @@ input[type='number'],input[type="number"]:hover,input[type="number"]:focus {appe
    }
 }
 
+.popap {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   top: 0;
+   left: 0;
+   z-index: 10;
+   background-color: #fff;
+   .container{
+      height: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+   }
+   &__inner {
+   }
+
+   &__title {
+      text-align: center;
+      margin: 0px 0px 40px 0px;
+      font-size: 36px;
+      text-transform: uppercase;
+      font-weight: 500;
+   }
+
+   &__subtitle {
+      max-width: 500px;
+      margin: auto;
+      text-align: center;
+      margin: 0px 0px 20px 0px;
+      font-size: 18px;
+   }
+
+   &__choose {
+      display: flex;
+      justify-content: center;
+      gap: 30px;
+   }
+
+   &__btn {
+      background-color: #343434;
+      padding: 20px 20px;
+      color: #fff !important;
+      border-radius: 999px;
+      text-transform: uppercase;
+      &--start{
+      }
+      &--choose{
+
+      }
+   }
+}
+
+
 
 body {
    margin: auto;

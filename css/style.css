@@ -663,6 +663,57 @@ input[type=number], input[type=number]:hover, input[type=number]:focus {
   background-color: rgba(255, 255, 255, 0.4);
 }
 
+.popap {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  z-index: 10;
+  background-color: #fff;
+}
+.popap .container {
+  height: 100%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+.popap__title {
+  text-align: center;
+  margin: 0px 0px 40px 0px;
+  font-size: 36px;
+  text-transform: uppercase;
+  font-weight: 500;
+}
+.popap__subtitle {
+  max-width: 500px;
+  margin: auto;
+  text-align: center;
+  margin: 0px 0px 20px 0px;
+  font-size: 18px;
+}
+.popap__choose {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  gap: 30px;
+}
+.popap__btn {
+  background-color: #343434;
+  padding: 20px 20px;
+  color: #fff !important;
+  border-radius: 999px;
+  text-transform: uppercase;
+}
 body {
   margin: auto;
   font-family: -apple-system, BlinkMacSystemFont, sans-serif;

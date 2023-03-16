@@ -1,10 +1,16 @@
 import base from './base.mjs'
 
+const popap = document.querySelector('.popap')
+const hash = location.hash.slice(1);
+if(hash === 'back') popap.style.display = 'none'
+
+const popapBtn = document.querySelector('.popap__btn--choose')
+popapBtn.addEventListener('click',()=>{
+   popap.style.display = 'none'
+})
+
 const block = document.querySelector('.main__body');
 const maxComplexity = 5;
-base.sort((a,b)=>{
-   return a.complexity - b.complexity;
-})
 
 for(let i = 0; i < base.length; i++){
    const item = document.createElement('a');
@@ -53,4 +59,3 @@ function colorForComplexity(number){
    if (number === 3)return 'orange'
    if (number === 4)return 'red'
 }
-
